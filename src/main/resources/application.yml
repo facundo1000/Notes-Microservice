@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: service-notes
+
+  data:
+    mongodb:
+      database: block_notes
+      #connection to MongoDB Atlas
+      uri: mongodb+srv://admin:sasa@testone.ikp6lbv.mongodb.net/?retryWrites=true&w=majority
+
