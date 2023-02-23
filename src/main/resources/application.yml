@@ -8,6 +8,6 @@ spring:
       username: admin
       password: password
       port: 27017
-      host: localhost
+      host: mongodb
       authentication-database: admin
 
