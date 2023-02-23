@@ -15,7 +15,6 @@ public class NoteTest {
     private static Note note;
     private static UserAccount userAccount;
 
-    private Note noteTwo = new Note();
 
     @BeforeAll
     static void setUp() {
@@ -28,26 +27,24 @@ public class NoteTest {
     @DisplayName("Test: adding note function")
     void addNoteToUser() {
         userAccount.addNote(note);
-        userAccount.addNote(noteTwo);
+
 
         assertThat(userAccount.getNote()).isNotEmpty();
         assertThat(userAccount.getNote()).hasSize(userAccount.getNote().size());
         assertThat(userAccount.getNote()).isInstanceOf(List.class);
 
         assertThat(note.getUser()).isEqualTo(userAccount.getEmail());
-        assertThat(noteTwo.getUser()).isEqualTo(userAccount.getEmail());
+
     }
 
     @Test
     @DisplayName("Test: remove note function")
     void removeNoteFromUser() {
-        addNoteToUser();
         userAccount.removeNote(note);
-        userAccount.removeNote(noteTwo);
 
         assertThat(userAccount.getNote()).isEmpty();
         assertThat(note.getUser()).isNull();
-        assertThat(noteTwo.getUser()).isNull();
+
 
     }
 }

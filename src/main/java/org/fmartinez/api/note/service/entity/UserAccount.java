@@ -32,9 +32,9 @@ public class UserAccount {
         note.setUser(this.getEmail());
     }
 
-    public void removeNote(Note note){
-        //TODO: implement
-        note.setUser(null);
+    public void removeNote(Note note) {
         this.note.remove(note);
+        note.setUser(null);
     }
+
 }
