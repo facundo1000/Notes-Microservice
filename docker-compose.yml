@@ -1,6 +1,16 @@
 version: "3.1"
 
 services:
+  note-service:
+    image: notes-service:v1
+    restart: always
+    ports:
+      - "8001:8080"
+    networks:
+      - springboot
+    depends_on:
+      - mongodb
+      - mongo-express
 
   mongodb:
     image: mongo
@@ -10,6 +20,8 @@ services:
     volumes:
       - mongo:/data
     restart: always
+    networks:
+      - springboot
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
@@ -18,8 +30,12 @@ services:
     image: mongo-express
     container_name: mongo_ui
     restart: always
+    depends_on:
+      - mongodb
     ports:
       - "8081:8081"
+    networks:
+      - springboot
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
@@ -27,3 +43,6 @@ services:
 
 volumes:
   mongo: { }
+
+networks:
+  springboot:
