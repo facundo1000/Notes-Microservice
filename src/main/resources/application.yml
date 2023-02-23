@@ -5,6 +5,9 @@ spring:
   data:
     mongodb:
       database: block_notes
-      #connection to MongoDB Atlas
-      uri: ${mongo.url}
+      username: admin
+      password: password
+      port: 27017
+      host: localhost
+      authentication-database: admin
 
