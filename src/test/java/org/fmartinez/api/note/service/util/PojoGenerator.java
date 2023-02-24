@@ -34,7 +34,7 @@ public class PojoGenerator {
                 .build();
     }
 
-    public static UserAccount buildUserAccount(){
+    public static UserAccount buildUserAccount() {
         return UserAccount.builder()
                 .id("64f36t0f956e323cb9b9fp35")
                 .username("Leonardo")
@@ -43,4 +43,5 @@ public class PojoGenerator {
                 .note(new ArrayList<>())
                 .build();
     }
+
 }
