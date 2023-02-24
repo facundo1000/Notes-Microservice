@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.fmartinez.api.note.service.util.PojoGenerator.buildNoteModel;
 import static org.fmartinez.api.note.service.util.PojoGenerator.buildUserAccount;
 
-public class NoteTest {
+public class UserAccountTest {
 
     private static Note note;
     private static UserAccount userAccount;
@@ -28,13 +28,11 @@ public class NoteTest {
     void addNoteToUser() {
         userAccount.addNote(note);
 
-
         assertThat(userAccount.getNote()).isNotEmpty();
         assertThat(userAccount.getNote()).hasSize(userAccount.getNote().size());
         assertThat(userAccount.getNote()).isInstanceOf(List.class);
 
         assertThat(note.getUser()).isEqualTo(userAccount.getEmail());
-
     }
 
     @Test
