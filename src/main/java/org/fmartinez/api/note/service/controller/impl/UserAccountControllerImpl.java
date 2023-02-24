@@ -45,12 +45,6 @@ public class UserAccountControllerImpl implements UserAccountController {
     }
 
     @Override
-    public ResponseEntity<?> addNoteToUser(String idNote, String idUser) {
-        UserAccount account = service.addNote(idNote, idUser);
-        return new ResponseEntity<>(account,HttpStatus.OK);
-    }
-
-    @Override
     public ResponseEntity<?> update(UserAccount user, BindingResult result, String id) {
         Map<String, String> errors = new HashMap<>();
         UserResponse response;
@@ -64,6 +58,12 @@ public class UserAccountControllerImpl implements UserAccountController {
                 .forEach(field -> errors.put("error", field.getDefaultMessage()));
 
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public ResponseEntity<?> addNoteToUser(String idNote, String idUser) {
+        UserAccount account = service.addNote(idNote, idUser);
+        return new ResponseEntity<>(account,HttpStatus.OK);
     }
 
     @Override
