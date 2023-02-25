@@ -11,3 +11,11 @@ spring:
       host: mongodb
       authentication-database: admin
 
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /openapi/ui
+  api-docs:
+    enabled: true
+    path: /openapi/docs
+
