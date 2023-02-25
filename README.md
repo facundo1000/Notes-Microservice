@@ -9,3 +9,4 @@ This Java microservice uses the following dependencies:
 - Lombock
 - Spring Configuration Processor
 - JUnit5 / Mokito
+- OpenApi / Swagger
