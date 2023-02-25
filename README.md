@@ -1,5 +1,5 @@
 # Notes-Microservice
-Microservice for the management of notes, with the basic crud operations for **notes** and **users**.
+Microservice for the management of notes, with the basic crud operations for **notes** and **users**. Create, read, update and delete for notes and user-accounts.
 
 ## What's included
 This Java microservice uses the following dependencies:
