@@ -18,6 +18,7 @@ public class UserAccount {
     private String id;
     @NotBlank(message = "username cannot be empty")
     private String username;
+
     @NotBlank(message = "email cannot be empty")
     @Email
     private String email;
