@@ -1,16 +1,22 @@
 package org.fmartinez.api.note.service.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.fmartinez.api.note.service.dto.user.UserResponse;
 import org.fmartinez.api.note.service.entity.Note;
 import org.fmartinez.api.note.service.entity.UserAccount;
+import org.fmartinez.api.note.service.exception.NotFoundException;
+import org.fmartinez.api.note.service.mapper.MapStructMapper;
 import org.fmartinez.api.note.service.repository.NotesRepository;
 import org.fmartinez.api.note.service.repository.UserAccountRepository;
 import org.fmartinez.api.note.service.service.UserAccountService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static org.fmartinez.api.note.service.exception.ErrorType.USER_ACCOUNT_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +26,8 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     private final NotesRepository noteRepo;
 
+    private final MapStructMapper mapper;
+
     @Override
     public List<UserAccount> findAll() {
         return repository.findAll();
@@ -28,12 +36,18 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public UserAccount findById(String id) {
         return repository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new NotFoundException(USER_ACCOUNT_NOT_FOUND));
     }
 
     @Override
-    public UserAccount create(UserAccount userAccount) {
-        return repository.save(userAccount);
+    public UserAccount findUserByEmail(String email) {
+        return repository.findUserAccountByEmail(email)
+                .orElseThrow(() -> new NotFoundException(USER_ACCOUNT_NOT_FOUND));
+    }
+
+    @Override
+    public UserResponse create(UserAccount user) {
+        return mapper.mapToUserResponse(repository.save(user));
     }
 
     @Override
@@ -53,7 +67,7 @@ public class UserAccountServiceImpl implements UserAccountService {
             }
             return account.get();
         }
-        throw new NoSuchElementException("id not found in the system");
+        throw new NotFoundException(USER_ACCOUNT_NOT_FOUND);
     }
 
     @Override
@@ -74,7 +88,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         if (id != null) {
             repository.deleteById(id);
         } else {
-            throw new NoSuchElementException("id not found in the system");
+            throw new NotFoundException(USER_ACCOUNT_NOT_FOUND);
         }
         return null;
     }
