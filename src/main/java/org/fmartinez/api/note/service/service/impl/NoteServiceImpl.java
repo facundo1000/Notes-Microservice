@@ -1,7 +1,9 @@
 package org.fmartinez.api.note.service.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.fmartinez.api.note.service.dto.note.ResponseNote;
 import org.fmartinez.api.note.service.entity.Note;
+import org.fmartinez.api.note.service.mapper.MapStructMapper;
 import org.fmartinez.api.note.service.repository.NotesRepository;
 import org.fmartinez.api.note.service.service.NoteService;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.NoSuchElementException;
 public class NoteServiceImpl implements NoteService {
 
     private final NotesRepository repository;
+    private final MapStructMapper mapper;
 
     @Override
     public List<Note> findAll() {
@@ -27,8 +30,8 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Note create(Note note) {
-        return repository.save(note);
+    public ResponseNote create(Note note) {
+        return mapper.noteToResponseNote(repository.save(note));
     }
 
     @Override

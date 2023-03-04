@@ -1,5 +1,6 @@
 package org.fmartinez.api.note.service.service;
 
+import org.fmartinez.api.note.service.dto.note.ResponseNote;
 import org.fmartinez.api.note.service.entity.Note;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface NoteService {
 
     Note getById(String id);
 
-    Note create(Note note);
+    ResponseNote create(Note note);
 
     Note update(Note note, String id);
 
