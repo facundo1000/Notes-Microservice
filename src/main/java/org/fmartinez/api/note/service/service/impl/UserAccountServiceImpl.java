@@ -76,6 +76,11 @@ public class UserAccountServiceImpl implements UserAccountService {
         Optional<UserAccount> account = repository.findById(idUser);
 
         if (note.isPresent() && account.isPresent()) {
+
+            if(account.get().getNote().isEmpty()){
+                account.get().setNote(new ArrayList<>());
+            }
+
             account.get().addNote(note.get());
             noteRepo.save(note.get());
             return repository.save(account.get());
