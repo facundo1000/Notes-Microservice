@@ -1,5 +1,7 @@
 package org.fmartinez.api.note.service.service;
 
+import org.fmartinez.api.note.service.dto.user.UserRequest;
+import org.fmartinez.api.note.service.dto.user.UserResponse;
 import org.fmartinez.api.note.service.entity.UserAccount;
 
 import java.util.List;
@@ -10,7 +12,9 @@ public interface UserAccountService {
 
     UserAccount findById(String id);
 
-    UserAccount create(UserAccount userAccount);
+    UserAccount findUserByEmail(String email);
+
+    UserResponse create(UserAccount user);
 
     UserAccount addNote(String idNote, String idUser);
 
