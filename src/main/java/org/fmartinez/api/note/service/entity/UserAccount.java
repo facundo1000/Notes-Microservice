@@ -18,7 +18,6 @@ import static org.fmartinez.api.note.service.constant.ApplicationConstant.EMAIL_
 @Builder
 @Document("user")
 public class UserAccount {
-
     @MongoId
     private String id;
     @NotBlank(message = "username cannot be empty")
