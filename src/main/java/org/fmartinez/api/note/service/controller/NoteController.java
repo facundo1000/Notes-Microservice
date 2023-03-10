@@ -11,6 +11,10 @@ import jakarta.validation.Valid;
 import org.fmartinez.api.note.service.dto.note.ResponseNote;
 import org.fmartinez.api.note.service.entity.Note;
 import org.fmartinez.api.note.service.swagger.delete.ResponseNoteDelete;
+import org.fmartinez.api.note.service.swagger.find.ResponseFindAllNotes;
+import org.fmartinez.api.note.service.swagger.find.ResponseFindByIdNote;
+import org.fmartinez.api.note.service.swagger.save.ResponseNoteSave;
+import org.fmartinez.api.note.service.swagger.save.ResponseNoteUpdate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -23,52 +27,22 @@ import static org.fmartinez.api.note.service.constant.ApplicationConstant.NOTE_P
 @RequestMapping(NOTE_PATH)
 public interface NoteController {
 
-    @Operation(summary = "Get Note List")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Get list of all notes", content = {
-                    @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = Note.class)))
-            }),
-            @ApiResponse(responseCode = "404", description = "Note not found")
-    })
+
+    @ResponseFindAllNotes
     @GetMapping("/list")
     ResponseEntity<List<Note>> findAll();
 
 
-    @Operation(summary = "Get Note")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Get note by id", content = {
-                    @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Note.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Note not found")
-    })
+    @ResponseFindByIdNote
     @GetMapping("/id/{id}")
     ResponseEntity<Note> findById(@PathVariable String id);
 
 
-    @Operation(summary = "Create Note")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Create note", content = {
-                    @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Note.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Note not found"),
-            @ApiResponse(responseCode = "500", description = "Bad request")
-    })
+    @ResponseNoteSave
     @PostMapping("/create")
     ResponseEntity<?> create(@RequestBody @Valid Note note, BindingResult result);
 
-
-    @Operation(summary = "Update Note")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Update note by id", content = {
-                    @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Note.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Note not found"),
-            @ApiResponse(responseCode = "500", description = "Bad request")
-    })
+    @ResponseNoteUpdate
     @PutMapping("/update/{id}")
     ResponseEntity<?> update(@RequestBody @Valid Note note, BindingResult result, @PathVariable String id);
 
