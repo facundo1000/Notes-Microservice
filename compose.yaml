@@ -2,7 +2,9 @@ version: "3.1"
 
 services:
   note-service:
+    build: .
     image: notes-service:v1
+    container_name: note_service
     restart: always
     ports:
       - "8001:8080"
