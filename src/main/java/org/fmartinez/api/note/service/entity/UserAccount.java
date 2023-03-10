@@ -5,8 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.List;
+
+import static org.fmartinez.api.note.service.constant.ApplicationConstant.EMAIL_REGEX;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,14 +18,14 @@ import java.util.List;
 @Builder
 @Document("user")
 public class UserAccount {
+
+    @MongoId
     private String id;
     @NotBlank(message = "username cannot be empty")
     private String username;
-
     @NotBlank(message = "email cannot be empty")
-    @Email
+    @Email(regexp = EMAIL_REGEX)
     private String email;
-
     @NotBlank(message = "password cannot be empty")
     private String password;
     @DBRef
