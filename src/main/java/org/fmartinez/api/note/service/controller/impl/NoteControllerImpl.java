@@ -2,7 +2,7 @@ package org.fmartinez.api.note.service.controller.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.fmartinez.api.note.service.controller.NoteController;
-import org.fmartinez.api.note.service.dto.ResponseNote;
+import org.fmartinez.api.note.service.dto.note.ResponseNote;
 import org.fmartinez.api.note.service.entity.Note;
 import org.fmartinez.api.note.service.service.NoteService;
 import org.springframework.http.HttpStatus;
@@ -33,12 +33,9 @@ public class NoteControllerImpl implements NoteController {
     public ResponseEntity<?> create(Note note, BindingResult result) {
 
         Map<String, Object> response = new HashMap<>();
-        ResponseNote dto;
 
         if (!result.hasErrors()) {
-            service.create(note);
-            dto = new ResponseNote(note.getTitle(), note.getCreated());
-            return new ResponseEntity<>(dto, HttpStatus.CREATED);
+            return new ResponseEntity<>(service.create(note), HttpStatus.CREATED);
         }
         result.getFieldErrors()
                 .forEach(fieldError -> response.put("error", fieldError.getDefaultMessage()));
@@ -48,12 +45,9 @@ public class NoteControllerImpl implements NoteController {
     @Override
     public ResponseEntity<?> update(Note note, BindingResult result, String id) {
         Map<String, Object> response = new HashMap<>();
-        ResponseNote dto;
 
         if (!result.hasErrors()) {
-            service.update(note, id);
-            dto = new ResponseNote(note.getTitle(), note.getUpdated());
-            return new ResponseEntity<>(dto, HttpStatus.OK);
+            return new ResponseEntity<>(service.update(note, id), HttpStatus.OK);
         }
 
         result.getFieldErrors()
