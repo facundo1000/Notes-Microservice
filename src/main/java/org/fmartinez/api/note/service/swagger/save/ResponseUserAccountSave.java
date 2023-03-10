@@ -19,7 +19,8 @@ import static java.lang.annotation.ElementType.*;
 @Operation(summary = "Create User-Account")
 @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Create User-Account", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = UserAccount.class))
+                @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = UserAccount.class))
         }),
         @ApiResponse(responseCode = "404", description = "User-Account not found"),
         @ApiResponse(responseCode = "500", description = "Bad request")

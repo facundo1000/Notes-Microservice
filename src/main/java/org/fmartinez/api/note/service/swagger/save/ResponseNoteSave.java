@@ -19,7 +19,8 @@ import static java.lang.annotation.ElementType.*;
 @Operation(summary = "Create Note")
 @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Create note", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Note.class))
+                @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = Note.class))
         }),
         @ApiResponse(responseCode = "404", description = "Note not found"),
         @ApiResponse(responseCode = "500", description = "Bad request")
