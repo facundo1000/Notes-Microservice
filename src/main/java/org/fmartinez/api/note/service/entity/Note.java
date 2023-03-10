@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
 
@@ -17,11 +18,13 @@ import java.time.LocalDateTime;
 @Builder
 @Document("note")
 public class Note {
+    @MongoId
     private String id;
+    @NotBlank(message = "field user cannot be blank")
     private String user;
-    @NotBlank(message = "title cannot be blank")
+    @NotBlank(message = " field title cannot be blank")
     private String title;
-    @NotBlank(message = "note cannot be blank")
+    @NotBlank(message = "field note cannot be blank")
     private String note;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updated;
