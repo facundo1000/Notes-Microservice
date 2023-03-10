@@ -13,7 +13,6 @@ import java.util.List;
 @Data
 public class UserResponse extends UserRequest {
     private List<Note> note;
-
     public UserResponse(@NotBlank(message = "username is required") String username,
                         @NotBlank(message = "email is required") String email,
                         @NotBlank(message = "password is required") String password,
