@@ -1,6 +1,7 @@
 package org.fmartinez.api.note.service.util;
 
-import org.fmartinez.api.note.service.dto.ResponseNote;
+import org.fmartinez.api.note.service.dto.note.ResponseNote;
+import org.fmartinez.api.note.service.dto.user.UserResponse;
 import org.fmartinez.api.note.service.entity.Note;
 import org.fmartinez.api.note.service.entity.UserAccount;
 
@@ -9,6 +10,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PojoGenerator {
 
@@ -28,10 +30,10 @@ public class PojoGenerator {
     }
 
     public static ResponseNote buildNoteResponse() {
-        return ResponseNote.builder()
-                .title("Title")
-                .updated(LocalDateTime.now())
-                .build();
+        return new ResponseNote("Title",
+                "Some notes",
+                LocalDateTime.now(NOW),
+                LocalDateTime.now(NOW));
     }
 
     public static UserAccount buildUserAccount() {
@@ -43,5 +45,13 @@ public class PojoGenerator {
                 .note(new ArrayList<>())
                 .build();
     }
+
+    public static UserResponse buildUserResponse() {
+        return new UserResponse("Username",
+                "email@yahoo.com",
+                "password",
+                List.of(new Note()));
+    }
+
 
 }
