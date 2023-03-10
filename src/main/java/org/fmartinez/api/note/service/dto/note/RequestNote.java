@@ -3,6 +3,7 @@ package org.fmartinez.api.note.service.dto.note;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class RequestNote {
-    @NotBlank(message = "title must not be null")
+    @NotBlank(message = " field title must not be null")
     @JsonProperty(required = true)
     private String title;
-    @NotBlank(message = "note must not be null")
+    @NotBlank(message = "field note must not be null")
     @JsonProperty(required = true)
     private String note;
 
