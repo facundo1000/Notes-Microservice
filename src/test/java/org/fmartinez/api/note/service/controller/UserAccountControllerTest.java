@@ -1,7 +1,7 @@
 package org.fmartinez.api.note.service.controller;
 
 import org.fmartinez.api.note.service.controller.impl.UserAccountControllerImpl;
-import org.fmartinez.api.note.service.dto.UserResponse;
+import org.fmartinez.api.note.service.dto.user.UserResponse;
 import org.fmartinez.api.note.service.entity.Note;
 import org.fmartinez.api.note.service.entity.UserAccount;
 import org.fmartinez.api.note.service.service.UserAccountService;
@@ -20,8 +20,7 @@ import org.springframework.validation.BindingResult;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.fmartinez.api.note.service.util.PojoGenerator.buildNoteModel;
-import static org.fmartinez.api.note.service.util.PojoGenerator.buildUserAccount;
+import static org.fmartinez.api.note.service.util.PojoGenerator.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -37,9 +36,10 @@ public class UserAccountControllerTest {
     UserAccountControllerImpl controller;
 
     private static UserAccount user;
-
     private static Note note;
     private static BindingResult result;
+
+    private static UserResponse userResponse;
 
 
     @BeforeAll
@@ -47,12 +47,13 @@ public class UserAccountControllerTest {
         user = buildUserAccount();
         note = buildNoteModel();
         result = new BeanPropertyBindingResult(user, "user");
+        userResponse = buildUserResponse();
     }
 
     @Test
     @DisplayName("Test: get users response [200]")
     void getAllUsers() {
-        when(service.findAll()).thenReturn(List.of(new UserAccount()));
+        when(service.findAll()).thenReturn(List.of(user));
         ResponseEntity<List<UserAccount>> response = controller.findAllUsers();
 
         assertThat(response).isNotNull();
@@ -83,15 +84,31 @@ public class UserAccountControllerTest {
     }
 
     @Test
+    @DisplayName("Test: get user by email response [200]")
+    void getUserByEmail() {
+        when(service.findUserByEmail(anyString())).thenReturn(user);
+
+        ResponseEntity<UserAccount> response = controller.findUserByEmail("davinci@monalisa.com");
+
+        assertThat(response).isNotNull();
+        assertThat(response).extracting(ResponseEntity::getStatusCode).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull().isInstanceOf(UserAccount.class);
+
+
+        verify(service).findUserByEmail(anyString());
+    }
+
+    @Test
     @DisplayName("Test: create new user response [201]")
     void createUser() {
-        when(service.create(any(UserAccount.class))).thenReturn(user);
+        //TODO: corregir
+        when(service.create(any(UserAccount.class))).thenReturn(userResponse);
 
         ResponseEntity<?> response = controller.create(user, result);
 
         assertThat(response).isNotNull();
         assertThat(response).extracting(ResponseEntity::getStatusCode).isEqualTo(HttpStatus.CREATED);
-        assertThat(response.getBody()).isNotNull().isInstanceOf(UserAccount.class);
+        assertThat(response.getBody()).isNotNull().isInstanceOf(UserResponse.class);
 
         verify(service).create(any(UserAccount.class));
     }
@@ -105,7 +122,7 @@ public class UserAccountControllerTest {
 
         assertThat(response).isNotNull();
         assertThat(response).extracting(ResponseEntity::getStatusCode).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNotNull().isInstanceOf(UserResponse.class);
+        assertThat(response.getBody()).isNotNull().isInstanceOf(UserAccount.class);
 
         verify(service).update(any(UserAccount.class), anyString());
     }

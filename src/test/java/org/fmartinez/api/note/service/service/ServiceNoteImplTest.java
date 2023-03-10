@@ -1,6 +1,8 @@
 package org.fmartinez.api.note.service.service;
 
+import org.fmartinez.api.note.service.dto.note.ResponseNote;
 import org.fmartinez.api.note.service.entity.Note;
+import org.fmartinez.api.note.service.mapper.MapStructMapper;
 import org.fmartinez.api.note.service.repository.NotesRepository;
 import org.fmartinez.api.note.service.service.impl.NoteServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,6 +22,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.fmartinez.api.note.service.util.PojoGenerator.buildNoteModel;
+import static org.fmartinez.api.note.service.util.PojoGenerator.buildNoteResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -30,10 +33,14 @@ public class ServiceNoteImplTest {
     @Mock
     NotesRepository repository;
 
+    @Mock
+    MapStructMapper mapper;
+
     @InjectMocks
     NoteServiceImpl service;
 
     private static Note note;
+    private static ResponseNote responseNote;
 
     private static final Clock CLOCK = Clock
             .fixed(Instant.parse("2023-02-22T14:30:00.00Z"), ZoneId.of("GMT"));
@@ -41,6 +48,7 @@ public class ServiceNoteImplTest {
     @BeforeAll
     static void setUp() {
         note = buildNoteModel();
+        responseNote = buildNoteResponse();
     }
 
 
@@ -76,16 +84,19 @@ public class ServiceNoteImplTest {
     @DisplayName("Test: create new note")
     void createNote() {
         when(repository.save(any(Note.class))).thenReturn(note);
+        when(mapper.noteToResponseNote(any(Note.class))).thenReturn(responseNote);
+
         LocalDateTime timeNow = LocalDateTime.now(CLOCK);
-        Note noteTest = service.create(note);
+        ResponseNote noteTest = service.create(note);
 
         assertThat(noteTest).isNotNull();
         assertThat(noteTest.getNote()).isNotEmpty();
-        assertThat(noteTest.getUser()).isNotEmpty();
+        assertThat(noteTest.getTitle()).isNotEmpty();
         assertThat(noteTest.getCreated()).isEqualTo(timeNow);
         assertThat(noteTest.getUpdated()).isEqualTo(timeNow);
 
         verify(repository).save(any(Note.class));
+        verify(mapper).noteToResponseNote(any(Note.class));
     }
 
     @Test

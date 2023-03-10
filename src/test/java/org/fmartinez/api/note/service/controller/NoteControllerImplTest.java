@@ -1,7 +1,7 @@
 package org.fmartinez.api.note.service.controller;
 
 import org.fmartinez.api.note.service.controller.impl.NoteControllerImpl;
-import org.fmartinez.api.note.service.dto.ResponseNote;
+import org.fmartinez.api.note.service.dto.note.ResponseNote;
 import org.fmartinez.api.note.service.entity.Note;
 import org.fmartinez.api.note.service.service.NoteService;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.internal.matchers.Not;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,7 @@ public class NoteControllerImplTest {
     @Test
     @DisplayName("Test: get all notes [200]")
     void getAllNotes() {
-        when(service.findAll()).thenReturn(List.of(new Note()));
+        when(service.findAll()).thenReturn( List.of(note));
         ResponseEntity<List<Note>> response = controller.findAll();
 
         assertThat(response).isNotNull();
@@ -76,7 +77,7 @@ public class NoteControllerImplTest {
     @Test
     @DisplayName("Test: new note response wildcard [201]")
     void createNote() {
-        when(service.create(any(Note.class))).thenReturn(note);
+        when(service.create(any(Note.class))).thenReturn(responseNote);
 
         ResponseEntity<?> response = controller.create(note, result);
 

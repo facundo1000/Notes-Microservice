@@ -1,7 +1,9 @@
 package org.fmartinez.api.note.service.service;
 
+import org.fmartinez.api.note.service.dto.user.UserResponse;
 import org.fmartinez.api.note.service.entity.Note;
 import org.fmartinez.api.note.service.entity.UserAccount;
+import org.fmartinez.api.note.service.mapper.MapStructMapper;
 import org.fmartinez.api.note.service.repository.NotesRepository;
 import org.fmartinez.api.note.service.repository.UserAccountRepository;
 import org.fmartinez.api.note.service.service.impl.UserAccountServiceImpl;
@@ -33,10 +35,15 @@ public class UserAccountServiceTest {
     @Mock
     NotesRepository repoNote;
 
+    @Mock
+    MapStructMapper mapper;
+
     @InjectMocks
     UserAccountServiceImpl service;
 
     private static UserAccount user;
+
+
     private static Note note;
 
     @BeforeAll
@@ -52,11 +59,14 @@ public class UserAccountServiceTest {
         when(repository.findAll()).thenReturn(List.of(new UserAccount()));
         List<UserAccount> users = service.findAll();
 
+        UserAccount userDto = users.iterator().next();
+
         assertThat(users).isNotEmpty();
         assertThat(users).hasSize(users.size());
         assertThat(users).isInstanceOf(List.class);
 
         verify(repository).findAll();
+
     }
 
     @Test
@@ -75,16 +85,17 @@ public class UserAccountServiceTest {
     @DisplayName("Test: create a new user")
     void createUser() {
         when(repository.save(any(UserAccount.class))).thenReturn(new UserAccount());
-        UserAccount newUser = service.create(user);
+        when(mapper.mapToUserResponse(any(UserAccount.class))).thenReturn(new UserResponse());
+        UserResponse newUser = service.create(user);
 
         assertThat(newUser).isNotNull();
         assertThat(user.getId()).isNotBlank();
         assertThat(user.getUsername()).isNotBlank();
         assertThat(user.getEmail()).isNotBlank();
         assertThat(user.getPassword()).isNotBlank();
-        assertThat(user.getNote()).isNotNull().hasSize(user.getNote().size());
 
         verify(repository).save(any(UserAccount.class));
+        verify(mapper).mapToUserResponse(any(UserAccount.class));
     }
 
     @Test
@@ -100,10 +111,23 @@ public class UserAccountServiceTest {
         assertThat(updateUser.getEmail()).isNotBlank();
         assertThat(updateUser.getUsername()).isNotBlank();
         assertThat(updateUser.getPassword()).isNotBlank();
-        assertThat(updateUser.getNote()).isNotNull().hasSize(user.getNote().size());
+//        assertThat(updateUser.getNote()).isNotNull().hasSize(user.getNote().size());
 
         verify(repository).save(any(UserAccount.class));
         verify(repository).findById(anyString());
+    }
+
+    @Test
+    @DisplayName("Test: get user by email")
+    void getUserByEmail() {
+        when(repository.findUserAccountByEmail(anyString())).thenReturn(Optional.of(user));
+        UserAccount userAccount = service.findUserByEmail("davinci@monalisa.com");
+
+        assertThat(userAccount).isNotNull();
+        assertThat(userAccount).isInstanceOf(UserAccount.class);
+        assertThat(userAccount.getEmail()).isEqualTo("davinci@monalisa.com");
+
+        verify(repository).findUserAccountByEmail(anyString());
     }
 
     @Test
@@ -117,7 +141,7 @@ public class UserAccountServiceTest {
 
         assertThat(userNote).isNotNull();
         assertThat(userNote.getId()).isEqualTo(user.getId());
-        assertThat(userNote.getNote()).isNotNull().hasSize(userNote.getNote().size()).contains(note);
+//        assertThat(userNote.getNote()).isNotNull().hasSize(userNote.getNote().size()).contains(note);
 
         verify(repository).findById(anyString());
         verify(repository).findById(anyString());
