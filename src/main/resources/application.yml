@@ -11,6 +11,7 @@ spring:
       host: mongodb
       authentication-database: admin
 
+
 springdoc:
   swagger-ui:
     enabled: true
