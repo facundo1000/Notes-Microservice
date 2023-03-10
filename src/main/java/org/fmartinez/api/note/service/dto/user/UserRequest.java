@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class UserRequest {
-    @NotBlank(message = "username is required")
+    @NotBlank(message = "field username is required")
     @JsonProperty(required = true)
     private String username;
-    @NotBlank(message = "email is required")
+    @NotBlank(message = "field email is required")
     @JsonProperty(required = true)
     private String email;
-    @NotBlank(message = "password is required")
+    @NotBlank(message = "field password is required")
     @JsonProperty(required = true)
     private String password;
 }
